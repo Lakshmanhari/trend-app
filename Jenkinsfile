@@ -44,9 +44,12 @@ pipeline {
                     sh '''
                         echo "Updating kubeconfig and deploying app..."
                         aws eks update-kubeconfig --region ap-south-1 --name trend-eks-cluster
+                       
                         kubectl apply -f k8s/deployment.yaml
                         kubectl apply -f k8s/service.yaml
-                        kubectl rollout status deployment/trend-app
+                         
+                        
+                        kubectl rollout restart deployment/trend-app
                         kubectl rollout status deployment/trend-app
                     '''
                 }
