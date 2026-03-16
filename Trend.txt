@@ -204,11 +204,3 @@ Trend/
 ├── Dockerfile
 └── README.md
 
-
-fjnjgdjngdjnj
-
-
-
-AmazonEKSClusterPolicy
-
-AmazonEKSWorkerNodePolicy
