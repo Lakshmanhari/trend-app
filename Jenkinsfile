@@ -47,10 +47,23 @@ pipeline {
                         kubectl apply -f k8s/deployment.yaml
                         kubectl apply -f k8s/service.yaml
                         kubectl rollout status deployment/trend-app
+                        kubectl rollout status deployment/trend-app
                     '''
                 }
             }
         }
 
     } // end of stages
+    post {
+        always {
+            echo 'Cleaning up Docker login...'
+            sh 'docker logout'
+        }
+        success {
+            echo 'Pipeline completed successfully! Your new changes are live.'
+        }
+        failure {
+            echo 'Pipeline failed. Check the logs above for errors.'
+        }
+    }
 } // end of pipeline
