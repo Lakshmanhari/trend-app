@@ -16,10 +16,20 @@ pipeline {
         }
 
         stage('Push to DockerHub') {
-            steps {
-                sh 'docker push lakshmanhari/trend-app:latest'
-            }
+              steps {
+                 withCredentials([usernamePassword(
+                     credentialsId: 'dockerhub-credentials',
+                     usernameVariable: 'DOCKER_USER',
+                     passwordVariable: 'DOCKER_PASS'
+                 )]) {
+
+            sh '''
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+            docker push lakshmanhari/trend-app:latest
+            '''
         }
+    }
+}
 
         stage('Deploy to Kubernetes') {
             steps {
