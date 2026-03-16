@@ -33,8 +33,8 @@ pipeline {
             }
         }
 
-        // ---------------- Configure AWS & Kubeconfig ----------------
-        stage('Configure AWS & Kubeconfig') {
+        // ---------------- Deploy to Kubernetes ----------------
+        stage('Deploy to Kubernetes') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'aws-eks-creds',
@@ -42,27 +42,15 @@ pipeline {
                     passwordVariable: 'AWS_SECRET_ACCESS_KEY'
                 )]) {
                     sh '''
+                        echo "Updating kubeconfig and deploying app..."
                         aws eks update-kubeconfig --region ap-south-1 --name trend-eks-cluster
+                        kubectl apply -f k8s/deployment.yaml
+                        kubectl apply -f k8s/service.yaml
+                        kubectl rollout status deployment/trend-app
                     '''
                 }
             }
         }
 
-        // ---------------- Deploy to Kubernetes ----------------
-        stage('Deploy to Kubernetes') {
-           steps {
-              withCredentials([usernamePassword(
-                  credentialsId: 'aws-eks-creds',
-                  usernameVariable: 'AWS_ACCESS_KEY_ID',
-                  passwordVariable: 'AWS_SECRET_ACCESS_KEY'
-              )]) {
-                  sh '''
-                     echo "Updating kubeconfig and deploying app..."
-                     aws eks update-kubeconfig --region ap-south-1 --name trend-eks-cluster
-                     kubectl apply -f k8s/deployment.yaml
-                     kubectl apply -f k8s/service.yaml
-                     kubectl rollout status deployment/trend-app
-                  '''
-        }
-    }
-}
+    } // end of stages
+} // end of pipeline
