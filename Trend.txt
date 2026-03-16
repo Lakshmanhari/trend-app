@@ -212,7 +212,3 @@ Trend/
 AmazonEKSClusterPolicy
 
 AmazonEKSWorkerNodePolicy
-
-IAMFullAccess
-
-AmazonEC2FullAccess
