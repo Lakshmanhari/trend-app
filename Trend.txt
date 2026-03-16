@@ -1,0 +1,205 @@
+Trend
+ ├─ README.md
+ └─ dist
+      ├─ index.html
+      ├─ assets
+      └─ vite.svg
+
+What you saw
+dist/
+  index.html
+  assets/
+
+These are static website files.
+
+So instead of NodeJS we will use a web server like Nginx to serve them.
+---
+🚀 Step 1 — Clone the Repository
+
+Open terminal in VS Code or PowerShell.
+
+git clone https://github.com/Vennilavanguvi/Trend.git
+cd Trend
+
+--
+
+Create Dockerfile
+Where
+
+Inside the Trend project root folder
+
+Trend
+ ├─ dist
+ └─ Dockerfile   ← create here
+Tool
+
+Docker
+
+Why we use Docker
+
+To package the application with its runtime so it can run anywhere.
+
+Create Dockerfile
+
+Open terminal:
+notepad Dockerfile
+
+FROM nginx:alpine
+
+COPY dist /usr/share/nginx/html
+
+EXPOSE 3000
+
+CMD ["nginx", "-g", "daemon off;"]
+
+🚀 Step 3 — Build Docker Image
+
+Run in terminal:
+
+docker build -t react-deploy-app .
+
+🚀 Step 4 — Run Docker Container on Port 3000
+docker run -d -p 3000:80 react-deploy-app
+
+Explanation:
+
+Option	Meaning
+-d	run container in background
+-p 3000:80	map port 3000 to container port 80
+
+🚀 Step 5 — Open the Application
+
+Open browser:
+
+http://localhost:3000
+
+🚀 Step 6 — Verify Container
+
+Run:
+
+docker ps
+
+Example output:
+
+CONTAINER ID   IMAGE              PORTS
+abc123         react-deploy-app   0.0.0.0:3000->80/tcp
+
+
+Check Your Docker Image
+
+Run:
+
+docker images
+
+You should see:
+
+REPOSITORY        TAG       IMAGE ID
+react-deploy-app  latest    xxxxxxxx
+
+
+
+5️⃣ Step 5 — Push Image to DockerHub
+Tool
+
+DockerHub (container registry)
+
+Purpose:
+
+Store Docker images so Kubernetes can download them.
+
+Login:
+
+docker login
+
+Tag image:
+
+docker tag react-deploy-app lakshmanhari/trend-app
+Push:
+
+docker push <dockerhub-username>/trend-app:latest
+docker push lakshmanhari/trend-app
+
+Test Pull (Optional but Good Practice)
+
+Run:
+
+docker pull lakshmanhari/trend-app
+
+This confirms the image is available from the registry.
+
+What This Means in DevOps
+
+Your workflow is now:
+
+React App (dist)
+      **↓**
+
+Docker Image
+      **↓**
+
+Docker Hub (lakshmanhari/trend-app)
+
+---
+Cloud Server
+
+Create a server using Amazon EC2.
+
+Then:
+
+Connect to EC2
+
+Install Docker
+
+Pull image from Docker Hub
+
+Run container
+
+Commands on EC2:
+
+docker pull lakshmanhari/trend-app
+docker run -d -p 3000:80 lakshmanhari/trend-app
+
+Application Access
+
+Now open in browser:
+
+http://EC2-Public-IP:3000
+
+The application will load.
+
+📊 Final Architecture
+Local VS Code
+     │
+     │ docker build
+     ▼
+Docker Image
+     │
+     │ docker push
+     ▼
+Docker Hub
+     │
+     │ docker pull
+     ▼
+EC2 Server
+     │
+     │ run container
+     ▼
+Application running on port 3000
+---
+12.3.2026
+📁 Correct Folder Structure
+
+Inside the Trend folder:
+
+Trend/
+│
+├── dist/
+│   ├── index.html
+│   ├── assets/
+│   ├── css/
+│   ├── js/
+│   └── (other static files)
+│
+├── nginx.conf
+├── Dockerfile
+└── README.md
