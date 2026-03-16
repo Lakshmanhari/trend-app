@@ -203,3 +203,16 @@ Trend/
 ├── nginx.conf
 ├── Dockerfile
 └── README.md
+
+
+
+
+
+
+AmazonEKSClusterPolicy
+
+AmazonEKSWorkerNodePolicy
+
+IAMFullAccess
+
+AmazonEC2FullAccess
