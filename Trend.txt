@@ -204,3 +204,20 @@ Trend/
 ├── Dockerfile
 └── README.md
 
+📁 Correct Folder Structure
+
+Inside the Trend folder:
+
+Trend/
+│
+├── dist/
+│   ├── index.html
+│   ├── assets/
+│   ├── css/
+│   ├── js/
+│   └── (other static files)
+│
+├── nginx.conf
+├── Dockerfile
+└── README.md
+
