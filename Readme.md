@@ -1022,6 +1022,7 @@ node_modules/
 ```id="dock02"
 .git
 .gitignore
+terraform
 node_modules
 README.md
 ```
