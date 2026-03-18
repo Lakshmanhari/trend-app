@@ -2105,7 +2105,68 @@ In Grafana → Explore:
 
 up
 
+----------------------------------------------------
+🧱 Final Flow Architecture Diagram
 
-
+                    👨‍💻 Developer (You)
+                           |
+                           |  git push
+                           ▼
+                 ┌─────────────────────┐
+                 │   GitHub Repo       │
+                 └─────────────────────┘
+                           |
+                           | (Webhook / CI Trigger)
+                           ▼
+                 ┌─────────────────────┐
+                 │   CI/CD Pipeline    │
+                 │ (Jenkins / GitHub)  │
+                 └─────────────────────┘
+                           |
+        ┌──────────────────┼──────────────────┐
+        |                  |                  |
+        ▼                  ▼                  ▼
+   🔨 Build App      🐳 Build Docker     ✅ Run Tests
+                        Image
+                           |
+                           ▼
+                 ┌─────────────────────┐
+                 │   Docker Registry   │
+                 │ (DockerHub / ECR)   │
+                 └─────────────────────┘
+                           |
+                           ▼
+                 🚀 Deploy using Terraform
+                           |
+                           ▼
+                ┌────────────────────────┐
+                │   AWS Cloud (ap-south-1)│
+                └────────────────────────┘
+                           |
+        ┌──────────────────┼──────────────────┐
+        |                  |                  |
+        ▼                  ▼                  ▼
+   🌐 VPC           🔐 Security Groups     🌍 Internet Gateway
+        |
+        ▼
+   🧩 Subnets (Public/Private)
+        |
+        ▼
+   ⚙️ EKS Cluster
+        |
+        ▼
+   🖥️ Worker Nodes (EC2)
+        |
+        ▼
+   ☸️ Kubernetes
+        |
+        ▼
+   📦 Pods (Your App Containers)
+        |
+        ▼
+   🌐 Service (LoadBalancer)
+        |
+        ▼
+   🌍 End Users (Browser Access)
 
 
